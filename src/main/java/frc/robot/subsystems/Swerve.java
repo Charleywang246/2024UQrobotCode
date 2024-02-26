@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.robotConstants;
 
 public class Swerve extends SubsystemBase {
   private final Pigeon2 gyro1;
@@ -32,10 +33,10 @@ public class Swerve extends SubsystemBase {
   private Field2d field;
 
   public Swerve() {
-    gyro1 = new Pigeon2(Constants.Swerve.pigeon1, "GTX7130");
-    gyro2 = new Pigeon2(Constants.Swerve.pigeon2, "GTX7130");
-    gyro3 = new Pigeon2(Constants.Swerve.pigeon3, "GTX7130");
-    gyro4 = new Pigeon2(Constants.Swerve.pigeon4, "GTX7130");
+    gyro1 = new Pigeon2(Constants.Swerve.pigeon1, robotConstants.canbusName);
+    gyro2 = new Pigeon2(Constants.Swerve.pigeon2, robotConstants.canbusName);
+    gyro3 = new Pigeon2(Constants.Swerve.pigeon3, robotConstants.canbusName);
+    gyro4 = new Pigeon2(Constants.Swerve.pigeon4, robotConstants.canbusName);
     zeroGyro();
 
     swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getYaw(), pos);

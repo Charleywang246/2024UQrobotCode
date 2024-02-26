@@ -114,7 +114,7 @@ public final class Constants {
       public static final int driveMotorID = 11;
       public static final int angleMotorID = 12;
       public static final int canCoderID = 1;
-      public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.302978);
+      public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.87255859375);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
 
@@ -123,7 +123,7 @@ public final class Constants {
       public static final int driveMotorID = 21;
       public static final int angleMotorID = 22;
       public static final int canCoderID = 2;
-      public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.720458);
+      public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.240234375);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
 
@@ -132,7 +132,7 @@ public final class Constants {
       public static final int driveMotorID = 31;
       public static final int angleMotorID = 32;
       public static final int canCoderID = 3;
-      public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.969482);
+      public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.966796875);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
     
@@ -141,16 +141,10 @@ public final class Constants {
       public static final int driveMotorID = 41;
       public static final int angleMotorID = 42;
       public static final int canCoderID = 4;
-      public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.607666);
+      public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.104248046875);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
 
-    /*
-     * mod 0 0.302978
-     * mod 1 0.720458
-     * mod 2 0.969482
-     * mod 3 0.670666
-     */
   }
 
   public static final class VisionConstants {
@@ -193,7 +187,7 @@ public final class Constants {
     public static final double ELBOW_AMP_POS = 0.0;
 
     /**
-     * Elbow Absolute Position **NO** Offset😎😎
+     * Elbow Absolute Position **NO** Offset
      * ground POS = 0.580078 rotations
      * intake POS = 0.576904 rotations dtheta =  -0.003714/-1.23
      * init POS 0.366455 rotations dtheta = -0.213625/-79.89

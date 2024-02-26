@@ -94,7 +94,7 @@ public class SwerveModule extends SubsystemBase {
   }
 
   private void configAngleEncoder() {
-    angleEncoder.setPosition(0);
+    // delete setPosition(0)
   }
 
   private void configAngleMotor() {
@@ -124,13 +124,15 @@ public class SwerveModule extends SubsystemBase {
   }
 
   public Rotation2d getAngle() {
+    // return Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValue());
     return Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValue()).plus(angleOffset);
   }
 
   public SwerveModulePosition getPosition(){
     return new SwerveModulePosition(
       driveEncoder.getPosition(), 
-      getAngle());
+      getAngle()
+    );
   }
 
   public SwerveModuleState getState() {
