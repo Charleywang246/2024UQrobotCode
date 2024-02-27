@@ -127,8 +127,6 @@ public class Swerve extends SubsystemBase {
     field.setRobotPose(getPose());
 
     SmartDashboard.putNumber("gyro ", getYaw().getDegrees());
-    SmartDashboard.putBoolean("isOriented ", Constants.Swerve.fieldOriented);
-    SmartDashboard.putBoolean("isSlow ", Constants.Swerve.slow);
 
     for (SwerveModule mod : mSwerveMods) {
       SmartDashboard.putNumber(

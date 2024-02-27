@@ -11,38 +11,34 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.UpperConstants;
 import frc.robot.Constants.robotConstants;
+import frc.robot.Constants.robotState;
 
 public class UpperSub extends SubsystemBase{
     
-    private final TalonFX leftElbow = new TalonFX(UpperConstants.leftElbowMotorID);
-    private final TalonFX rightElbow = new TalonFX(UpperConstants.rightElbowMotorID);
+    private final TalonFX leftElbow = new TalonFX(UpperConstants.leftElbowMotorID, robotConstants.canbusName);
+    private final TalonFX rightElbow = new TalonFX(UpperConstants.rightElbowMotorID, robotConstants.canbusName);
     
-    private final CANSparkMax leftShooter = new CANSparkMax(UpperConstants.leftShooterMotorID, MotorType.kBrushless);
-    private final CANSparkMax rightShooter = new CANSparkMax(UpperConstants.rightShooterMotorID, MotorType.kBrushless);
+    // private final CANSparkMax leftShooter = new CANSparkMax(UpperConstants.leftShooterMotorID, MotorType.kBrushless);
+    // private final CANSparkMax rightShooter = new CANSparkMax(UpperConstants.rightShooterMotorID, MotorType.kBrushless);
 
-    private final TalonSRX intake = new TalonSRX(UpperConstants.intakeMotorID);
+    // private final TalonSRX intake = new TalonSRX(UpperConstants.intakeMotorID);
 
-    private final CANcoder elbowCancoder = new CANcoder(UpperConstants.elbowCancoderID);
-    private final CANcoder shooterCaNcoder = new CANcoder(UpperConstants.shooterCancoderID, robotConstants.canbusName);
+    private final CANcoder elbowCancoder = new CANcoder(UpperConstants.elbowCancoderID, robotConstants.canbusName);
+    // private final CANcoder shooterCaNcoder = new CANcoder(UpperConstants.shooterCancoderID, robotConstants.canbusName);
 
     public UpperSub() {
         leftElbow.setInverted(false);
         rightElbow.setInverted(true);
 
-        leftShooter.setInverted(false);
-        rightShooter.setInverted(true);
+        // leftShooter.setInverted(false);
+        // rightShooter.setInverted(true);
     }
 
-    public double getElbowDeg() {
-        return elbowCancoder.getPosition().getValue()*360;
-    }
+    // elbow
+    public void resetElbow() {}
 
-    public void resetElbowCancoder() {
-        elbowCancoder.setPosition(0);
-    }
-
-    public double getShooterVelocity() {
-        return shooterCaNcoder.getVelocity().getValue();
+    public double getElbowRotation() {
+        return elbowCancoder.getPosition().getValue();
     }
 
     public void setElbow(double speed) {
@@ -50,23 +46,40 @@ public class UpperSub extends SubsystemBase{
         rightElbow.set(speed);
     }
 
-    public void setShooter(double speed) {
-        leftShooter.set(speed);
-        rightShooter.set(speed);
-    }
+    // intake
+    // public double getIntakeVel() {
+    //     return intake.getSelectedSensorVelocity();
+    // }
 
-    public void setShooter(double upSpeed, double downSpeed) {
-        leftShooter.set(downSpeed);
-        rightShooter.set(upSpeed);
-    }
+    // public void setIntake(double speed) {
+    //     intake.set(TalonSRXControlMode.PercentOutput, speed);
+    // }
 
-    public void setIntake(double speed) {
-        intake.set(TalonSRXControlMode.PercentOutput, speed);
-    }
+    // shooter
+    // public void resetShooter() {
+    //     leftShooter.restoreFactoryDefaults();
+    //     rightShooter.restoreFactoryDefaults();
+    // }
+
+    // public double getShooterRPM() {
+    //     return shooterCaNcoder.getVelocity().getValue();
+    // }
+
+    // public void setShooter(double speed) {
+    //     leftShooter.set(speed);
+    //     rightShooter.set(speed);
+    // }
+
+    // public void setShooter(double upSpeed, double downSpeed) {
+    //     leftShooter.set(downSpeed);
+    //     rightShooter.set(upSpeed);
+    // }
+
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("elbowPos", getElbowDeg());
-        SmartDashboard.putNumber("shooterVel", getShooterVelocity());
+        SmartDashboard.putNumber("elbowDEG", getElbowRotation());
+        // SmartDashboard.putNumber("intakeVel", getIntakeVel());
+        // SmartDashboard.putNumber("shooterRPM", getShooterRPM());
     }
 }

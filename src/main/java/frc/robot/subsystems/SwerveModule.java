@@ -124,7 +124,6 @@ public class SwerveModule extends SubsystemBase {
   }
 
   public Rotation2d getAngle() {
-    // return Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValue());
     return Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValue()).plus(angleOffset);
   }
 

@@ -30,15 +30,14 @@ public final class Constants {
   public static final class robotConstants {
     public static final String canbusName = "GTX7130";
     public static final int DriverControllerID = 0;
-    public static final int UpperControllerID = 1;
   }
 
   public static final class Swerve {
     public static final double axisDeadBand = 0.05; // make sure ur robot won't vibrate cuz the joystick gives a input like 0.002 or sth
-    public static final int pigeon1 = 5; // advanced gyro
-    public static final int pigeon2 = 6;
-    public static final int pigeon3 = 7;
-    public static final int pigeon4 = 8;
+    public static final int pigeon1 = 13; // advanced gyro
+    public static final int pigeon2 = 14;
+    public static final int pigeon3 = 15;
+    public static final int pigeon4 = 16;
     public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
     /* Drivetrain Constants */
@@ -103,45 +102,42 @@ public final class Constants {
     public static final SensorDirectionValue canCoderInvert = SensorDirectionValue.CounterClockwise_Positive; // invert cancoder(in CTREconfig)
 
     /* Field Oriented */
-    public static boolean fieldOriented = false;
+    // public static boolean fieldOriented = false;
     
-    /* Slow Mode */
-    public static boolean slow = false;
-
     /* Module Specific Constants */
     /* Front Left Module - Module 0 */
     public static final class Mod0 {
-      public static final int driveMotorID = 11;
-      public static final int angleMotorID = 12;
-      public static final int canCoderID = 1;
-      public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.87255859375);
+      public static final int driveMotorID = 10;
+      public static final int angleMotorID = 11;
+      public static final int canCoderID = 3;
+      public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.291016);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
 
     /* Front Right Module - Module 1 */
     public static final class Mod1 {
-      public static final int driveMotorID = 21;
-      public static final int angleMotorID = 22;
-      public static final int canCoderID = 2;
-      public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.240234375);
+      public static final int driveMotorID = 7;
+      public static final int angleMotorID = 8;
+      public static final int canCoderID = 6;
+      public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.166992);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
 
     /* Rear Left Module - Module 2 */
     public static final class Mod2 {
-      public static final int driveMotorID = 31;
-      public static final int angleMotorID = 32;
-      public static final int canCoderID = 3;
-      public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.966796875);
+      public static final int driveMotorID = 4;
+      public static final int angleMotorID = 5;
+      public static final int canCoderID = 9;
+      public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.609375);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
     
     /* Rear Right Module - Module 3 */
     public static final class Mod3 {
-      public static final int driveMotorID = 41;
-      public static final int angleMotorID = 42;
-      public static final int canCoderID = 4;
-      public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.104248046875);
+      public static final int driveMotorID = 1;
+      public static final int angleMotorID = 2;
+      public static final int canCoderID = 12;
+      public static final Rotation2d angleOffset = Rotation2d.fromRotations(-0.025879);
       public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
     }
 
@@ -158,21 +154,19 @@ public final class Constants {
   }
 
   public static final class UpperConstants {
-    public static final int leftElbowMotorID = 4;
-    public static final int rightElbowMotorID = 5;
-    public static final int leftShooterMotorID = 1;
-    public static final int rightShooterMotorID = 1;
-    public static final int elbowCancoderID = 3;
+    public static final int leftElbowMotorID = 17;
+    public static final int rightElbowMotorID = 18;
+    public static final int leftShooterMotorID = 20;
+    public static final int rightShooterMotorID = 21;
+    public static final int elbowCancoderID = 19;
     public static final int intakeMotorID = 1;
     public static final int shooterCancoderID = 1;
 
     public static final double shooter_arm_Angle = 135;
 
-    public static final double intakeSpeed = 0.25;
-
-    public static final double elbowKP = 0.0;
+    public static final double elbowKP = 10;
     public static final double elbowKI = 0.0;
-    public static final double elbowKD = 0.0;
+    public static final double elbowKD = 5;
     public static final double elbowiWindup = 0.0;
     public static final double elbowiLimit = 0.0;
 
@@ -182,9 +176,23 @@ public final class Constants {
     public static final double shooteriWindup = 0.0;
     public static final double shooteriLimit = 0.0;
 
-    public static final double ELBOW_INIT_POS = 0.0;
-    public static final double ELBOW_GROUND_POS = 0.0;
+    public static final double ELBOW_DEFAULT_POS = 0.149902;
+    public static final double ELBOW_GROUND_POS = 0.397949;
     public static final double ELBOW_AMP_POS = 0.0;
+    public static final double ELBOW_SPEAKER_POS = 0.0;
+    public static final double ELBOW_SHOOT_POS = 0.0;
+
+    public static final double INTAKE_DEFAULT_SPEED = 0.0;
+    public static final double INTAKE_GROUND_SPEED = 0.0;
+    public static final double INTAKE_AMP_SPEED = 0.0;
+    public static final double INTAKE_SPEAKER_SPEED = 0.0;
+    public static final double INTAKE_SHOOT_SPEED = 0.0;
+
+    public static final double SHOOTER_DEFAULT_SPEED = 0.0;
+    public static final double SHOOTER_GROUND_SPEED = 0.0;
+    public static final double SHOOTER_AMP_SPEED = 0.0;
+    public static final double SHOOTER_SPEAKER_SPEED = 0.0;
+    public static final double SHOOTER_SHOOT_SPEED = 0.0;
 
     /**
      * Elbow Absolute Position **NO** Offset
@@ -195,46 +203,11 @@ public final class Constants {
   }
 
   public enum robotState {
-    INIT,
+    DEFAULT,
     GROUND,
-    LOAD,
     AMP,
+    SPEAKER,
     SHOOT
   }
 
-  /**
-   * @param state robot's current state
-   * @return Target elbow angle for idle, intaking, and shooting
-   */
-  @SuppressWarnings("null")
-  public static final double getElbowTarget(robotState state) {
-    if(state == robotState.INIT) return UpperConstants.ELBOW_INIT_POS;
-    else if(state == robotState.GROUND) return UpperConstants.ELBOW_GROUND_POS;
-    else if(state == robotState.LOAD || state == robotState.SHOOT) {
-      return VisionSub.calculateShooterAngle() == 0.0 ? 
-        UpperConstants.ELBOW_INIT_POS
-        : 180 - UpperConstants.shooter_arm_Angle - VisionSub.calculateShooterAngle();
-    }
-    else if(state == robotState.AMP) return UpperConstants.ELBOW_AMP_POS;
-    else return (Double) null;
-  }
-
-  @SuppressWarnings("null")
-  public static final double getShooterTarget(robotState state) {
-    if(state == robotState.INIT) return 0.0;
-    else if(state == robotState.GROUND) return UpperConstants.intakeSpeed;
-    else if(state == robotState.LOAD) return 0.0;
-    else if(state == robotState.AMP) return -UpperConstants.intakeSpeed;
-    else if(state == robotState.SHOOT) return 0.0;
-    else return (Double) null;
-  }
-
-  /**
-   * @param state robot's current state
-   * @return Target intake speed
-  */
-  public static final double getIntakeTarget(robotState state) {
-    if(state == robotState.GROUND) return UpperConstants.intakeSpeed;
-    else return 0.0;
-  }
 }
