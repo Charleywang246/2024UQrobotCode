@@ -180,26 +180,12 @@ public final class Constants {
     public static final double ELBOW_GROUND_POS = 0.397949;
     public static final double ELBOW_AMP_POS = 0.0;
     public static final double ELBOW_SPEAKER_POS = 0.0;
-    public static final double ELBOW_SHOOT_POS = 0.0;
 
-    public static final double INTAKE_DEFAULT_SPEED = 0.0;
-    public static final double INTAKE_GROUND_SPEED = 0.0;
-    public static final double INTAKE_AMP_SPEED = 0.0;
-    public static final double INTAKE_SPEAKER_SPEED = 0.0;
-    public static final double INTAKE_SHOOT_SPEED = 0.0;
+    public static final double INTAKE_GROUND_SPEED = 0.75;
+    public static final double INTAKE_SHOOT_SPEED = -0.75;
 
-    public static final double SHOOTER_DEFAULT_SPEED = 0.0;
-    public static final double SHOOTER_GROUND_SPEED = 0.0;
-    public static final double SHOOTER_AMP_SPEED = 0.0;
-    public static final double SHOOTER_SPEAKER_SPEED = 0.0;
-    public static final double SHOOTER_SHOOT_SPEED = 0.0;
-
-    /**
-     * Elbow Absolute Position **NO** Offset
-     * ground POS = 0.580078 rotations
-     * intake POS = 0.576904 rotations dtheta =  -0.003714/-1.23
-     * init POS 0.366455 rotations dtheta = -0.213625/-79.89
-     */
+    public static final double SHOOTER_GROUND_SPEED = 0.05;
+    public static final double SHOOTER_SHOOT_SPEED = -1;
   }
 
   public enum robotState {

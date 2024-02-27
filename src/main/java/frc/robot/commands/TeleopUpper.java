@@ -41,6 +41,9 @@ public class TeleopUpper extends Command{
     private boolean tele = false;
     private boolean ground = false;
 
+    // private boolean shooting = false;
+    // private boolean intaking = false;
+
     public TeleopUpper(UpperSub sub, XboxController controller) {
         this.sub = sub;
         this.controller = controller;
@@ -58,27 +61,31 @@ public class TeleopUpper extends Command{
         // switch (state) {
         //     case DEFAULT:
         //         elbowAngle = UpperConstants.ELBOW_DEFAULT_POS;
-        //         intakeSpeed = UpperConstants.INTAKE_DEFAULT_SPEED;
-        //         shooterSpeed = UpperConstants.SHOOTER_DEFAULT_SPEED;
+        //         intakeSpeed = 0;
+        //         shooterSpeed = 0;
         //         break;
         //     case GROUND:
         //         elbowAngle = UpperConstants.ELBOW_GROUND_POS;
-        //         intakeSpeed = UpperConstants.INTAKE_GROUND_SPEED;
-        //         shooterSpeed = UpperConstants.SHOOTER_GROUND_SPEED;
+        //         intakeSpeed = sub.hasNote() ? 0 : UpperConstants.INTAKE_GROUND_SPEED;
+        //         shooterSpeed = sub.hasNote() ? 0 : UpperConstants.SHOOTER_GROUND_SPEED;
         //         break;
         //     case AMP:
         //         elbowAngle = UpperConstants.ELBOW_AMP_POS;
-        //         intakeSpeed = UpperConstants.INTAKE_AMP_SPEED;
-        //         shooterSpeed = UpperConstants.SHOOTER_AMP_SPEED;
+        //         intakeSpeed = 0;
+        //         shooterSpeed = 0;
         //         break;
         //     case SPEAKER:
         //         elbowAngle = UpperConstants.ELBOW_SPEAKER_POS;
-        //         intakeSpeed = UpperConstants.INTAKE_SPEAKER_SPEED;
-        //         shooterSpeed = UpperConstants.SHOOTER_SPEAKER_SPEED;
+        //         intakeSpeed = 0;
+        //         shooterSpeed = 0;
         //         break;
         //     case SHOOT:
+        //         intakeSpeed = UpperConstants.INTAKE_SHOOT_SPEED;
+        //         shooterSpeed = UpperConstants.SHOOTER_SHOOT_SPEED;
         //         break;
         // }
+
+        // 😂😂
 
         if(controller.getLeftBumperPressed()) {
             tele = !tele;
@@ -94,17 +101,59 @@ public class TeleopUpper extends Command{
              MathUtil.applyDeadband(-controller.getRightTriggerAxis(), 0.05);
             sub.setElbow(ep);
         } else {
-            double target = ground ? UpperConstants.ELBOW_GROUND_POS : UpperConstants.ELBOW_DEFAULT_POS;
-            double output = elbowPID.calculate(target - sub.getElbowRotation());
-            sub.setElbow(output);
-            SmartDashboard.putNumber("output", output);
+            double elbowTarget = ground ? UpperConstants.ELBOW_GROUND_POS : UpperConstants.ELBOW_DEFAULT_POS;
+            double elbowOutput = elbowPID.calculate(elbowTarget - sub.getElbowRotation());
+            sub.setElbow(elbowOutput);
+            SmartDashboard.putNumber("output", elbowOutput);
         }
-        // sub.setShooter(-controller.getRightY());
-        // sub.setIntake(controller.getLeftTriggerAxis());
 
         SmartDashboard.putBoolean("tele", tele);
         SmartDashboard.putBoolean("ground", ground);
         SmartDashboard.putString("robotState", state.toString());
+
+        // 😂😂
+
+        // if(controller.getRightBumperPressed()) {
+        //     state = robotState.GROUND;
+        // }
+
+        // if(state == robotState.GROUND && sub.hasNote()) {
+        //     state = robotState.DEFAULT;
+        // }
+
+        // if(controller.getLeftBumperPressed()) {
+        //     state = robotState.SHOOT;
+        // }
+
+        // if(controller.getXButtonPressed()) {
+        //     state = robotState.AMP;
+        // }
+
+        // if(controller.getRightTriggerAxis() > 0.5) {
+        //     state = robotState.SHOOT;
+        // }
+
+        // if(state == robotState.SHOOT && !sub.hasNote()) {
+        //     state = robotState.DEFAULT;
+        // }
+
+        // sub.setElbow(elbowPID.calculate(elbowAngle - sub.getElbowRotation()));
+        // sub.setIntake(intakeSpeed);
+        // sub.setShooter(shooterPID.calculate(shooterSpeed - sub.getShooterRPM()));
+
+        // 😂😂
+
+        // if(!intaking && !shooting) {
+        //     sub.setIntake(-controller.getLeftY());
+        //     sub.setShooter(-controller.getRightY());
+        // }
+
+        // SmartDashboard.putNumber("setLeft", -controller.getLeftY());
+        // SmartDashboard.putNumber("getLeftVel", sub.getIntakeVel());
+        // SmartDashboard.putNumber("setRight", -controller.getRightY());
+        // SmartDashboard.putNumber("getShooterRPM", sub.getShooterRPM());
+
+        // SmartDashboard.putString("robotState", state.toString());
     }
 
     @Override
