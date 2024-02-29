@@ -4,7 +4,18 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
+
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import frc.robot.Constants.AutoConstants;
+import frc.robot.commands.AutoSwerve;
+import frc.robot.subsystems.Swerve;
 
 /**
  * Do NOT add any static variables to this class, or any initialization at all. Unless you know what

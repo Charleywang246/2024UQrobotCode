@@ -7,12 +7,14 @@ package frc.robot;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.CANSparkBase.IdleMode;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.lib.config.SwerveModuleConstants;
 import frc.robot.subsystems.VisionSub;
@@ -30,6 +32,35 @@ public final class Constants {
   public static final class robotConstants {
     public static final String canbusName = "GTX7130";
     public static final int DriverControllerID = 0;
+  }
+
+  public static final class AutoConstants {
+    public static final double kMaxSpeedMetersPerSecond = Swerve.maxSpeed / 4;
+    public static final double kMaxAngularSpeedRadiansPerSecond = Swerve.maxAngularVelocity / 10;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+    public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 4;
+    public static final double kPXController = 1.5;
+    public static final double kPYController = 1.5;
+    public static final double kPThetaController = 3;
+
+    public static final TrapezoidProfile.Constraints kThetaControllerConstraints = 
+      new TrapezoidProfile.Constraints(
+        kMaxAngularSpeedRadiansPerSecond,
+        kMaxAngularAccelerationRadiansPerSecondSquared);
+
+    public static final Pose2d target[][] = {
+      {
+        new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0)),
+        new Pose2d(new Translation2d(1, 0), Rotation2d.fromDegrees(0)),
+        new Pose2d(new Translation2d(1, 1), Rotation2d.fromDegrees(0)),
+        new Pose2d(new Translation2d(0, 1), Rotation2d.fromDegrees(0)),
+        new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0))
+      },
+      {
+        new Pose2d(new Translation2d(1, 0), Rotation2d.fromDegrees(0)),
+        new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0))
+      }
+    };
   }
 
   public static final class Swerve {
@@ -156,11 +187,11 @@ public final class Constants {
   public static final class UpperConstants {
     public static final int leftElbowMotorID = 17;
     public static final int rightElbowMotorID = 18;
-    public static final int leftShooterMotorID = 20;
-    public static final int rightShooterMotorID = 21;
+    public static final int leftShooterMotorID = 21;
+    public static final int rightShooterMotorID = 20;
     public static final int elbowCancoderID = 19;
-    public static final int intakeMotorID = 1;
-    public static final int shooterCancoderID = 1;
+    public static final int intakeMotorID = 22;
+    // public static final int shooterCancoderID = 1;
 
     public static final double shooter_arm_Angle = 135;
 
@@ -176,15 +207,15 @@ public final class Constants {
     public static final double shooteriWindup = 0.0;
     public static final double shooteriLimit = 0.0;
 
-    public static final double ELBOW_DEFAULT_POS = 0.149902;
-    public static final double ELBOW_GROUND_POS = 0.397949;
-    public static final double ELBOW_AMP_POS = 0.0;
-    public static final double ELBOW_SPEAKER_POS = 0.0;
+    public static final double ELBOW_DEFAULT_POS = -0.002197;
+    public static final double ELBOW_GROUND_POS = -0.236328;
+    public static final double ELBOW_AMP_POS = 0.012939;
+    public static final double ELBOW_SPEAKER_POS = -0.204589;
 
-    public static final double INTAKE_GROUND_SPEED = 0.75;
-    public static final double INTAKE_SHOOT_SPEED = -0.75;
+    public static final double INTAKE_GROUND_SPEED = -0.4;
+    public static final double INTAKE_SHOOT_SPEED = -1;
 
-    public static final double SHOOTER_GROUND_SPEED = 0.05;
+    public static final double SHOOTER_GROUND_SPEED = 0.02;
     public static final double SHOOTER_SHOOT_SPEED = -1;
   }
 
