@@ -17,7 +17,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.lib.config.SwerveModuleConstants;
-import frc.robot.subsystems.VisionSub;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -34,33 +33,13 @@ public final class Constants {
     public static final int DriverControllerID = 0;
   }
 
-  public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = Swerve.maxSpeed / 4;
-    public static final double kMaxAngularSpeedRadiansPerSecond = Swerve.maxAngularVelocity / 10;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
-    public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 4;
-    public static final double kPXController = 1.5;
-    public static final double kPYController = 1.5;
-    public static final double kPThetaController = 3;
-
-    public static final TrapezoidProfile.Constraints kThetaControllerConstraints = 
-      new TrapezoidProfile.Constraints(
-        kMaxAngularSpeedRadiansPerSecond,
-        kMaxAngularAccelerationRadiansPerSecondSquared);
-
-    public static final Pose2d target[][] = {
-      {
-        new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0)),
-        new Pose2d(new Translation2d(1, 0), Rotation2d.fromDegrees(0)),
-        new Pose2d(new Translation2d(1, 1), Rotation2d.fromDegrees(0)),
-        new Pose2d(new Translation2d(0, 1), Rotation2d.fromDegrees(0)),
-        new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0))
-      },
-      {
-        new Pose2d(new Translation2d(1, 0), Rotation2d.fromDegrees(0)),
-        new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0))
-      }
-    };
+  public enum UpperState {
+    DEFAULT,
+    GROUND,
+    AMP,
+    SPEAKER,
+    SHOOT,
+    TELE
   }
 
   public static final class Swerve {
@@ -123,7 +102,7 @@ public final class Constants {
 
     /* Neutral Modes */
     public static final IdleMode angleNeutralMode = IdleMode.kBrake;
-    public static final IdleMode driveNeutralMode = IdleMode.kBrake; // whether u want to let neo stop slowly individually(coast) or fiercely wholely(brake)
+    public static final IdleMode driveNeutralMode = IdleMode.kCoast; // whether u want to let neo stop slowly individually(coast) or fiercely wholely(brake)
 
     /* Motor Inverts */
     public static final boolean driveInvert = false;
@@ -218,14 +197,6 @@ public final class Constants {
     public static final double SHOOTER_GROUND_SPEED = 0.02;
     public static final double SHOOTER_SHOOT_SPEED = -1;
     public static final double SHOOTER_LEGAL_SPEED = 5000;
-  }
-
-  public enum robotState {
-    DEFAULT,
-    GROUND,
-    AMP,
-    SPEAKER,
-    SHOOT
   }
 
   public static final class LedContants {
