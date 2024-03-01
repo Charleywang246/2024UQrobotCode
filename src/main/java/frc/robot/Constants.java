@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.CANSparkBase.IdleMode;
 
@@ -39,7 +42,8 @@ public final class Constants {
     AMP,
     SPEAKER,
     SHOOT,
-    TELE
+    TELE,
+    ENDGAME
   }
 
   public static final class Swerve {
@@ -102,7 +106,7 @@ public final class Constants {
 
     /* Neutral Modes */
     public static final IdleMode angleNeutralMode = IdleMode.kBrake;
-    public static final IdleMode driveNeutralMode = IdleMode.kCoast; // whether u want to let neo stop slowly individually(coast) or fiercely wholely(brake)
+    public static final IdleMode driveNeutralMode = IdleMode.kBrake; // whether u want to let neo stop slowly individually(coast) or fiercely wholely(brake)
 
     /* Motor Inverts */
     public static final boolean driveInvert = false;
@@ -191,16 +195,25 @@ public final class Constants {
     public static final double ELBOW_AMP_POS = 0.012939;
     public static final double ELBOW_SPEAKER_POS = -0.204589;
 
-    public static final double INTAKE_GROUND_SPEED = -0.4;
-    public static final double INTAKE_SHOOT_SPEED = -1;
+    public static final double INTAKE_GROUND_SPEED = 0.3;
+    public static final double INTAKE_SHOOT_SPEED = 1;
 
     public static final double SHOOTER_GROUND_SPEED = 0.02;
     public static final double SHOOTER_SHOOT_SPEED = -1;
     public static final double SHOOTER_LEGAL_SPEED = 5000;
+
+    public static boolean teleMode = false;
+
+    public static final Map<Double,Double> data = new HashMap<>(){{
+      put(0.0, 0.0);
+      put(0.5, 0.0);
+    }};
+
+    // y = -4x + 58.8
   }
 
   public static final class LedContants {
-    public static final int ledLenfth = 34;
+    public static final int ledLenfth = 32;
     public static final int ledPwmPort = 9;
   }
 

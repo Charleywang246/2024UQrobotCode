@@ -121,6 +121,8 @@ public class Swerve extends SubsystemBase {
     return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - averageAngle) : Rotation2d.fromDegrees(averageAngle);
   }
 
+  
+
   @Override
   public void periodic() {
     swerveOdometry.update(getYaw(), getPositions());
@@ -139,9 +141,5 @@ public class Swerve extends SubsystemBase {
     SmartDashboard.putNumber("SO_X", getPose().getX());
     SmartDashboard.putNumber("SO_Y", getPose().getY());
     SmartDashboard.putNumber("SO_Rotation", getPose().getRotation().getRotations());
-  }
-
-  public void stopModules() {
-    drive(new Translation2d(0, 0), 0, false, false);
   }
 }

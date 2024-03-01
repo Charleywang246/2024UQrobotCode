@@ -9,10 +9,17 @@ import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.AnalogOutput;
+import edu.wpi.first.wpilibj.AnalogTrigger;
+import edu.wpi.first.wpilibj.AnalogTriggerOutput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.AnalogTriggerOutput.AnalogTriggerType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -41,13 +48,13 @@ public class UpperSub extends SubsystemBase{
     // private final I2C.Port i2cPort = I2C.Port.kOnboard;
     // private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
+    // AnalogInput colorSensor = new AnalogInput(9);
+
     private UpperState state;
 
     private double elbowAngle;
     private double intakeSpeed;
     private double shooterSpeed;
-
-    private boolean tele = false;
 
     private final PID elbowPID = new PID(
         UpperConstants.elbowKP, 
@@ -79,6 +86,7 @@ public class UpperSub extends SubsystemBase{
         led.start();
 
         state = UpperState.DEFAULT;
+
     }
 
     // config
@@ -96,6 +104,10 @@ public class UpperSub extends SubsystemBase{
     public void setElbow(double speed) {
         leftElbow.set(speed);
         rightElbow.set(speed);
+    }
+
+    public double calculateElbowAngle() {
+        return 0;
     }
 
     // intake
@@ -163,12 +175,26 @@ public class UpperSub extends SubsystemBase{
 
     // public boolean hasNote() {
     //     return Math.abs(getHue() - 30) < 10 ? true : false;
+
+    // public boolean hasNote() {
+    //     double val = colorSensor.getAverageVoltage();
+    //     return true;
     // }
 
     // state machine
+
+    public UpperState getState() {
+        return state;
+    }
+
     public void setState(UpperState state) {
-        if(state == this.state) state = UpperState.DEFAULT;
-        else this.state = state;
+        if(!UpperConstants.teleMode) {
+            if(this.state == state && (state != UpperState.SHOOT)) {
+                this.state = UpperState.DEFAULT;
+            } else {
+                this.state = state;
+            } 
+        }
     }
 
     @Override
@@ -208,26 +234,30 @@ public class UpperSub extends SubsystemBase{
                 blink(new Color("#00FF00"));
                 break;
             case TELE:
+                setLED(new Color("#4CE1C8"));
+                break;
+            case ENDGAME:
+                elbowAngle = UpperConstants.ELBOW_GROUND_POS;
                 intakeSpeed = 0;
                 shooterSpeed = 0;
-                tele = true;
-                setLED(new Color("4CE1C8"));
-                break;
+                setLED(new Color("#9A00F3"));
         }
 
-        if(!tele) {
-            // setElbow(-elbowPID.calculate(elbowAngle - getElbowRotation()));
-            // setShooter(shooterSpeed);
-            // setIntake(intakeSpeed);
+        if(!UpperConstants.teleMode) {
+            setElbow(-elbowPID.calculate(elbowAngle - getElbowRotation()));
+            setShooter(shooterSpeed);
+            setIntake(intakeSpeed);
         }
 
         SmartDashboard.putString("robotState", state.toString());
-
         SmartDashboard.putNumber("elbowDEG", getElbowRotation());
         SmartDashboard.putNumber("intakeVel", getIntakeVel());
         SmartDashboard.putNumber("LeftShooterRPM", getLeftShooterRPM());
         SmartDashboard.putNumber("RightShooterRPM", getRightShooterRPM());
         // SmartDashboard.putNumber("Hue", getHue());
         // SmartDashboard.putBoolean("hasNote", hasNote());
+        // SmartDashboard.putNumber("colorSensorInput", colorSensor.getAverageVoltage());
+
+        SmartDashboard.putBoolean("tele", UpperConstants.teleMode);
     }
 }
