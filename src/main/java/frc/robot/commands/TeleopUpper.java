@@ -98,6 +98,7 @@ public class TeleopUpper extends Command{
                 sub.setShooter(0);
             }
         }else {
+
             if(controller.getYButtonPressed()) {ground = !ground;amp=false;speaker=false;}
             if(controller.getXButtonPressed()) {amp = !amp;ground=false;speaker=false;}
             if(controller.getAButtonPressed()) {speaker = !speaker;ground=false;amp=false;} 

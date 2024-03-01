@@ -11,7 +11,7 @@
         "x": 1.0641140564792346,
         "y": 6.801199611367832
       },
-      "isLocked": false,
+      "isLocked": true,
       "linkedName": null
     },
     {
@@ -24,8 +24,8 @@
         "y": 6.492762289705795
       },
       "nextControl": null,
-      "isLocked": false,
-      "linkedName": null
+      "isLocked": true,
+      "linkedName": "Y3"
     }
   ],
   "rotationTargets": [],

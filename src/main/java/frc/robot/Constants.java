@@ -217,6 +217,7 @@ public final class Constants {
 
     public static final double SHOOTER_GROUND_SPEED = 0.02;
     public static final double SHOOTER_SHOOT_SPEED = -1;
+    public static final double SHOOTER_LEGAL_SPEED = 5000;
   }
 
   public enum robotState {
@@ -225,6 +226,11 @@ public final class Constants {
     AMP,
     SPEAKER,
     SHOOT
+  }
+
+  public static final class LedContants {
+    public static final int ledLenfth = 34;
+    public static final int ledPwmPort = 9;
   }
 
 }

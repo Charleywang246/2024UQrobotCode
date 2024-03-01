@@ -20,6 +20,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PathPlannerTrajectory;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -36,20 +37,18 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 public class RobotContainer {
   
   private final Swerve m_Swerve = new Swerve();
-  private final UpperSub m_upper = new UpperSub();
+  // private final UpperSub m_upper = new UpperSub();
 
   private final XboxController driverController = new XboxController(robotConstants.DriverControllerID);
 
   private final TeleopSwerve tele = new TeleopSwerve(m_Swerve, driverController);
-  private final TeleopUpper teleopUpper = new TeleopUpper(m_upper, driverController);
-  // private final AutoSwerve autoSwerve = new AutoSwerve(m_Swerve);
-
-  // private final SendableChooser<Command> autoChooser;
-  
+  // private final TeleopUpper teleopUpper = new TeleopUpper(m_upper, driverController);
+   
+  // private final PathPlannerAuto auto = new PathPlannerAuto("square");
 
   public RobotContainer() {
     m_Swerve.setDefaultCommand(tele);
-    m_upper.setDefaultCommand(teleopUpper);
+    // m_upper.setDefaultCommand(teleopUpper);
     configureBindings();
 
     // autoChooser = AutoBuilder.buildAutoChooser();
@@ -87,7 +86,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    // return auto;
     return null;
-    // return autoChooser.getSelected();
   }
 }

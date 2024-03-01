@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -28,20 +30,7 @@ public class AutoSwerve extends Command{
 
     public SwerveControllerCommand getCommand(int id) {
 
-        // TrajectoryConfig trajectoryConfig = new TrajectoryConfig(
-        //     AutoConstants.kMaxSpeedMetersPerSecond,
-        //     AutoConstants.kMaxAccelerationMetersPerSecondSquared
-        // ).setKinematics(frc.robot.Constants.Swerve.swerveKinematics);
-
-        String trajectoryJSON = "paths/YourPath.wpilib.json";
         Trajectory trajectory = new Trajectory();
-
-        try {
-            Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-            trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-        } catch (IOException ex) {
-            DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-        }
 
         PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
         PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
@@ -52,14 +41,6 @@ public class AutoSwerve extends Command{
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
         return new SwerveControllerCommand(
-            // TrajectoryGenerator.generateTrajectory(
-            //     AutoConstants.target[id][0],
-            //     new ArrayList<>(){{
-            //         for(int i=1;i<AutoConstants.target[id].length-1;i++) add(AutoConstants.target[id][i].getTranslation());
-            //     }},
-            //     AutoConstants.target[id][AutoConstants.target[id].length - 1],
-            //     trajectoryConfig
-            // ),
             trajectory,
             m_Swerve::getPose,
             frc.robot.Constants.Swerve.swerveKinematics,
