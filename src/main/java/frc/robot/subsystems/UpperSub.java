@@ -41,13 +41,11 @@ public class UpperSub extends SubsystemBase{
 
     private final CANcoder elbowCancoder = new CANcoder(UpperConstants.elbowCancoderID, robotConstants.canbusName);
 
-    private AddressableLED led = new AddressableLED(LedContants.ledPwmPort);
-    private AddressableLEDBuffer buffer = new AddressableLEDBuffer(LedContants.ledLenfth);
+    private final AddressableLED led = new AddressableLED(LedContants.ledPwmPort);
+    private final AddressableLEDBuffer buffer = new AddressableLEDBuffer(LedContants.ledLenfth);
 
-    // private final I2C.Port i2cPort = I2C.Port.kOnboard;
-    // private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
-
-    // AnalogInput colorSensor = new AnalogInput(9);
+    private final DigitalInput leftLimitSwitch = new DigitalInput(UpperConstants.LeftLimitSwitchID);
+    private final DigitalInput rightLimitSwitch = new DigitalInput(UpperConstants.rightLimitSwitchID);
 
     Timer timer = new Timer();
 
@@ -149,19 +147,10 @@ public class UpperSub extends SubsystemBase{
         else timer.restart();
     }
 
-    // color sensor
-    // public double getHue() {
-    //     frc.lib.math.Color color = new frc.lib.math.Color(
-    //         colorSensor.getRed(),
-    //         colorSensor.getGreen(),
-    //         colorSensor.getBlue()
-    //     );
-    //     return color.getHue();
-    // }
-
-    // public boolean hasNote() {
-    //     return Math.abs(getHue() - 30) < 10 ? true : false;
-    // }
+    // limitSwitch
+    public boolean hasNote() {
+        return (leftLimitSwitch.get() || rightLimitSwitch.get());
+    }
 
     // state machine
     public UpperState getState() {
@@ -190,11 +179,11 @@ public class UpperSub extends SubsystemBase{
                 break;
             case GROUND:
                 elbowAngle = UpperConstants.ELBOW_GROUND_POS;
-                intakeSpeed = UpperConstants.INTAKE_GROUND_SPEED;
+                intakeSpeed = hasNote() ? 0: UpperConstants.INTAKE_GROUND_SPEED;
                 shooterSpeed = UpperConstants.SHOOTER_GROUND_SPEED;
-                blink(12, 41, 235);
-                // if(hasNote()) setLED(new Color("#0C29EB"));
-                // else blink(new Color("#0C29EB"));
+                if(hasNote()) setLED(12,41,235);
+                else blink(12,41,235);
+                if(hasNote()) setState(UpperState.DEFAULT);
                 break;
             case AMP:
                 elbowAngle = UpperConstants.ELBOW_AMP_POS;
@@ -206,16 +195,15 @@ public class UpperSub extends SubsystemBase{
                 elbowAngle = UpperConstants.ELBOW_SPEAKER_POS;
                 intakeSpeed = 0;
                 shooterSpeed = UpperConstants.SHOOTER_SHOOT_SPEED;
-                if(Math.abs(getShooterRPM()) > 5000) setLED(0,255,0);
-                else setLED(255,0,0);
+                if(Math.abs(getShooterRPM()) > 5000) setLED(255,0,0);
+                else setLED(0,255,0);
                 break;
             case SHOOT:
                 intakeSpeed = UpperConstants.INTAKE_SHOOT_SPEED;
                 shooterSpeed = UpperConstants.SHOOTER_SHOOT_SPEED;
-                blink(0,255,0);
+                blink(255,0,0);
                 break;
             case TELE:
-                setLED(76, 225, 200);
                 break;
             case ENDGAME:
                 elbowAngle = UpperConstants.ELBOW_GROUND_POS;
@@ -225,19 +213,19 @@ public class UpperSub extends SubsystemBase{
                 break;
         }
 
-        setElbow(-elbowPID.calculate(elbowAngle - getElbowRotation()));
-        setShooter(shooterSpeed);
-        setIntake(intakeSpeed);
+        if(!UpperConstants.teleMode) {
+            setElbow(-elbowPID.calculate(elbowAngle - getElbowRotation()));
+            setShooter(shooterSpeed);
+            setIntake(intakeSpeed);
+        }
 
         SmartDashboard.putString("robotState", state.toString());
         SmartDashboard.putNumber("elbowDEG", getElbowRotation());
         SmartDashboard.putNumber("intakeVel", getIntakeVel());
         SmartDashboard.putNumber("LeftShooterRPM", getLeftShooterRPM());
         SmartDashboard.putNumber("RightShooterRPM", getRightShooterRPM());
-        // SmartDashboard.putNumber("Hue", getHue());
-        // SmartDashboard.putBoolean("hasNote", hasNote());
-        // SmartDashboard.putNumber("colorSensorInput", colorSensor.getAverageVoltage());
+        SmartDashboard.putBoolean("hasNote", hasNote());
 
         SmartDashboard.putBoolean("tele", UpperConstants.teleMode);
     }
-}
+}   

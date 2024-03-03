@@ -112,6 +112,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return null;
+    return auto_x2.getAuto(m_Swerve, m_upper);
   }
 }

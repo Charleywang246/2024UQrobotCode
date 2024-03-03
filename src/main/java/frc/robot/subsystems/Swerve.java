@@ -165,14 +165,6 @@ public class Swerve extends SubsystemBase {
     return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - averageAngle) : Rotation2d.fromDegrees(averageAngle);
   }
 
-  public double calculateElbowAngle(double distance) {
-    double lowerBound = UpperConstants.data.get(Math.floor(distance));
-    double upperBound = UpperConstants.data.get(Math.ceil(distance));
-    double angle = 
-      upperBound * (distance - Math.floor(distance)) + lowerBound * (Math.ceil(distance) - distance);
-    return angle;
-  }
-
   @Override
   public void periodic() {
     swerveOdometry.update(getYaw(), getPositions());
@@ -180,13 +172,13 @@ public class Swerve extends SubsystemBase {
 
     SmartDashboard.putNumber("gyro ", getYaw().getDegrees());
 
-    for (SwerveModule mod : mSwerveMods) {
-      SmartDashboard.putNumber(
-          "Mod " + mod.moduleNumber + " Cancoder", mod.getAngle().getRotations());
+    // for (SwerveModule mod : mSwerveMods) {
+    //   SmartDashboard.putNumber(
+    //       "Mod " + mod.moduleNumber + " Cancoder", mod.getAngle().getRotations());
 
-      SmartDashboard.putNumber(
-          "Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
-    }
+    //   SmartDashboard.putNumber(
+    //       "Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
+    // }
 
     SmartDashboard.putNumber("SO_X", getPose().getX());
     SmartDashboard.putNumber("SO_Y", getPose().getY());

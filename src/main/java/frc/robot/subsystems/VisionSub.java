@@ -1,12 +1,9 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.VisionConstants;
 
 public class VisionSub extends SubsystemBase{
     
@@ -36,11 +33,10 @@ public class VisionSub extends SubsystemBase{
         return table.getEntry("botpose").getDoubleArray(new double[6]);
     }
 
-    public double[] getRobotPose_red() {
-        return table.getEntry("botpose_wpired").getDoubleArray(new double[6]);
-    }
-
-    public double[] getRobotPose_blue() {
-        return table.getEntry("bitpose_wpiblue").getDoubleArray(new double[6]);
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("RobotPose_X", getRobotPose()[0]);
+        SmartDashboard.putNumber("RobotPose_Y", getRobotPose()[1]);
+        SmartDashboard.putNumber("RobotPose_r", getRobotPose()[5]);
     }
 }

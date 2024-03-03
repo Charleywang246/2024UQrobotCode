@@ -13,6 +13,7 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkBase.IdleMode;
 
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -169,13 +170,23 @@ public final class Constants {
   }
 
   public static final class VisionConstants {
-    public static final String CAMname = "";
-    public static final Transform3d RCtoCAM = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
     public static final Translation3d zeroTranslation3d = new Translation3d(0, 0, 0);
     public static final Transform3d zeroTransform3d = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+
+    public static final Map<Double, Double> data = new HashMap<>(){{
+      put(null, null);
+    }};
+
+    public static final Translation2d Speaker_red = new Translation2d(8.036, 1.442);
+    public static final Translation2d Speaker_blue = new Translation2d(-8.036, 1.442);
+    // 0.6775
   }
 
   public static final class UpperConstants {
+
+    public static final int rightLimitSwitchID = 8;
+    public static final int LeftLimitSwitchID = 7;
+
     public static final int leftElbowMotorID = 17;
     public static final int rightElbowMotorID = 18;
     public static final int leftShooterMotorID = 21;
@@ -211,12 +222,8 @@ public final class Constants {
     public static final double SHOOTER_LEGAL_SPEED = 5000;
 
     public static boolean teleMode = false;
-
-    public static final Map<Double,Double> data = new HashMap<>(){{
-    }};
-
-    // y = -4x + 58.8
   }
+  
 
   public static final class LedContants {
     public static final int ledLenfth = 16;

@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.Swerve;
 import frc.robot.Constants.UpperConstants;
 import frc.robot.Constants.UpperState;
 import frc.robot.subsystems.UpperSub;
@@ -31,13 +30,11 @@ public class TeleopUpper extends Command{
             else if(controller.getLeftTriggerAxis() > 0.02) sub.setElbow(-controller.getLeftTriggerAxis());
             else sub.setElbow(0);
 
-            if(controller.getXButton()) {
-                sub.setIntake(0.8);
-                sub.setShooter(-1);
-            }else {
-                sub.setIntake(0);
-                sub.setShooter(0);
-            }
+            if(controller.getXButton()) sub.setShooter(-1);
+            else sub.setShooter(0);
+
+            if(controller.getBButton()) sub.setIntake(1);
+            else sub.setIntake(0);
         } else {
             if(controller.getRightTriggerAxis() > 0.02) {
                 sub.setState(UpperState.SHOOT);
@@ -48,6 +45,7 @@ public class TeleopUpper extends Command{
                     if(controller.getYButtonPressed()) sub.setState(UpperState.GROUND);
                     if(controller.getXButtonPressed()) sub.setState(UpperState.AMP);
                     if(controller.getAButtonPressed()) sub.setState(UpperState.SPEAKER);
+                    if(controller.getStartButtonPressed()) sub.setState(UpperState.ENDGAME);
                 }
             }
         }
