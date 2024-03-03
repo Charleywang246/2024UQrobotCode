@@ -1,59 +1,46 @@
 package frc.robot.subsystems;
 
-import org.photonvision.PhotonCamera;
-import org.photonvision.targeting.PhotonPipelineResult;
-
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 
 public class VisionSub extends SubsystemBase{
+    
+    private final NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 
-    private static final PhotonCamera CAM = new PhotonCamera(VisionConstants.CAMname);
-    private static PhotonPipelineResult CAMresult = new PhotonPipelineResult();
-
-    private static Transform3d RCtoTarget = VisionConstants.zeroTransform3d;
-
-    public VisionSub() {
-        
+    public double getTx() {
+        return table.getEntry("tx").getDouble(0);
     }
 
-    public static boolean hasTarget() {
-        return CAMresult.hasTargets();
+    public double getTy() {
+        return table.getEntry("ty").getDouble(0);
     }
 
-    public static int getTargetID() {
-        return CAMresult.getBestTarget().getFiducialId();
+    public double getTv() {
+        return table.getEntry("tv").getDouble(0);
     }
 
-    public static Transform3d getRCtoTarget() {
-        RCtoTarget = hasTarget() ? 
-            CAMresult.getBestTarget().getBestCameraToTarget().plus(VisionConstants.RCtoCAM)
-            : VisionConstants.zeroTransform3d;
-        if(getTargetID() == 4 || getTargetID() == 7) RCtoTarget = RCtoTarget.plus(VisionConstants.Id47ToSpeakerC);
-        if(getTargetID() == 3 || getTargetID() == 8) RCtoTarget = RCtoTarget.plus(VisionConstants.Id38ToSpeakerC);
-        return RCtoTarget;
+    public double getTa() {
+        return table.getEntry("ta").getDouble(0);
     }
 
-    /** @return  */
-    public static double calculateShooterAngle() {
-        if(getTargetID() == 3 || getTargetID() == 4 || getTargetID() == 7 || getTargetID() == 8) {
-            Transform3d vector = getRCtoTarget();
-            double angle = Math.atan(vector.getZ()/Math.sqrt(Math.pow(vector.getX(),2) + Math.pow(vector.getY(), 2)));
-            return angle;
-        } else return 0.0;
-        
+    public boolean hasTarget() {
+        return getTv() < 1.0 ? false : true;
     }
 
-    @Override
-    public void periodic() {
-        CAMresult = CAM.getLatestResult();
-        Transform3d vector = getRCtoTarget();
-        SmartDashboard.putBoolean("hasTarget", hasTarget());
-        SmartDashboard.putNumber("TargetID", hasTarget() ? getTargetID() : -1);
-        SmartDashboard.putNumber("dx", vector.getX());
-        SmartDashboard.putNumber("dy", vector.getY());
-        SmartDashboard.putNumber("dz", vector.getZ());
+    public double[] getRobotPose() {
+        return table.getEntry("botpose").getDoubleArray(new double[6]);
+    }
+
+    public double[] getRobotPose_red() {
+        return table.getEntry("botpose_wpired").getDoubleArray(new double[6]);
+    }
+
+    public double[] getRobotPose_blue() {
+        return table.getEntry("bitpose_wpiblue").getDoubleArray(new double[6]);
     }
 }

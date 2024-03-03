@@ -43,12 +43,13 @@ public class UpperSub extends SubsystemBase{
 
     private AddressableLED led = new AddressableLED(LedContants.ledPwmPort);
     private AddressableLEDBuffer buffer = new AddressableLEDBuffer(LedContants.ledLenfth);
-    private Timer timer = new Timer();
 
     // private final I2C.Port i2cPort = I2C.Port.kOnboard;
     // private final ColorSensorV3 colorSensor = new ColorSensorV3(i2cPort);
 
     // AnalogInput colorSensor = new AnalogInput(9);
+
+    Timer timer = new Timer();
 
     private UpperState state;
 
@@ -64,14 +65,6 @@ public class UpperSub extends SubsystemBase{
         UpperConstants.elbowiLimit
     );
 
-    private final PID shooterPID = new PID(
-        UpperConstants.shooterKP, 
-        UpperConstants.shooterKI,
-        UpperConstants.shooterKD,
-        UpperConstants.shooteriWindup,
-        UpperConstants.shooteriLimit
-    );
-
     public UpperSub() {
         leftElbow.setInverted(false);
         rightElbow.setInverted(true);
@@ -82,11 +75,10 @@ public class UpperSub extends SubsystemBase{
         configElbow();
 
         led.setLength(LedContants.ledLenfth);
-        setLED(new Color("#000000"));
+        setLED(0,0,0);
         led.start();
 
         state = UpperState.DEFAULT;
-
     }
 
     // config
@@ -94,6 +86,13 @@ public class UpperSub extends SubsystemBase{
         elbowCancoder.getConfigurator().apply(
             new CANcoderConfiguration().MagnetSensor.withAbsoluteSensorRange(AbsoluteSensorRangeValue.Signed_PlusMinusHalf)
         );
+    }
+
+    public void configShooter() {
+        leftShooter.restoreFactoryDefaults();
+        rightShooter.restoreFactoryDefaults();
+        leftShooter.setIdleMode(IdleMode.kBrake);
+        rightShooter.setIdleMode(IdleMode.kBrake);
     }
 
     // elbow
@@ -106,8 +105,8 @@ public class UpperSub extends SubsystemBase{
         rightElbow.set(speed);
     }
 
-    public double calculateElbowAngle() {
-        return 0;
+    public void setElbowAngle(double angle) {
+        elbowAngle = angle;
     }
 
     // intake
@@ -120,14 +119,6 @@ public class UpperSub extends SubsystemBase{
     }
 
     // shooter
-    public void configShooter() {
-        leftShooter.restoreFactoryDefaults();
-        rightShooter.restoreFactoryDefaults();
-
-        leftShooter.setIdleMode(IdleMode.kBrake);
-        rightShooter.setIdleMode(IdleMode.kBrake);
-    }
-
     public double getLeftShooterRPM() {
         return leftShooter.getEncoder().getVelocity();
     }
@@ -145,22 +136,17 @@ public class UpperSub extends SubsystemBase{
         rightShooter.set(speed);
     }
 
-    public void setShooter(double upSpeed, double downSpeed) {
-        leftShooter.set(downSpeed);
-        rightShooter.set(upSpeed);
-    }
-
-    public void setLED(Color color) {
-        for(int i=0;i<buffer.getLength();i++) buffer.setRGB(i, (int)color.red, (int)color.green, (int)color.blue);
+    // LED
+    public void setLED(int r, int g, int b) {
+        for(int i=0;i<buffer.getLength()-1;i++) buffer.setRGB(i, r, g, b);
         led.setData(buffer);
     }
 
-    public void blink(Color color) {
-        timer.restart();
-        if(timer.get() < 0.2) setLED(color);
-        else setLED(new Color("#000000"));
-
-        if(timer.get() > 0.4) timer.restart();
+    public void blink(int r, int g, int b) {
+        timer.start();
+        if(timer.get() < 0.1) setLED(r, g, b);
+        else if(timer.get() < 0.2) setLED(0, 0, 0);
+        else timer.restart();
     }
 
     // color sensor
@@ -175,14 +161,9 @@ public class UpperSub extends SubsystemBase{
 
     // public boolean hasNote() {
     //     return Math.abs(getHue() - 30) < 10 ? true : false;
-
-    // public boolean hasNote() {
-    //     double val = colorSensor.getAverageVoltage();
-    //     return true;
     // }
 
     // state machine
-
     public UpperState getState() {
         return state;
     }
@@ -205,13 +186,13 @@ public class UpperSub extends SubsystemBase{
                 elbowAngle = UpperConstants.ELBOW_DEFAULT_POS;
                 intakeSpeed = 0;
                 shooterSpeed = 0;
-                setLED(new Color("#E8D5F5"));
+                setLED(232, 213, 245);
                 break;
             case GROUND:
                 elbowAngle = UpperConstants.ELBOW_GROUND_POS;
                 intakeSpeed = UpperConstants.INTAKE_GROUND_SPEED;
                 shooterSpeed = UpperConstants.SHOOTER_GROUND_SPEED;
-                setLED(new Color("#0C29EB"));
+                blink(12, 41, 235);
                 // if(hasNote()) setLED(new Color("#0C29EB"));
                 // else blink(new Color("#0C29EB"));
                 break;
@@ -219,35 +200,34 @@ public class UpperSub extends SubsystemBase{
                 elbowAngle = UpperConstants.ELBOW_AMP_POS;
                 intakeSpeed = 0;
                 shooterSpeed = 0;
-                setLED(new Color("#FFFF00"));
+                setLED(255, 255, 0);
                 break;
             case SPEAKER:
                 elbowAngle = UpperConstants.ELBOW_SPEAKER_POS;
                 intakeSpeed = 0;
                 shooterSpeed = UpperConstants.SHOOTER_SHOOT_SPEED;
-                if(getShooterRPM() > 5000) setLED(new Color("#00FF00"));
-                else setLED(new Color("#FF0000"));
+                if(Math.abs(getShooterRPM()) > 5000) setLED(0,255,0);
+                else setLED(255,0,0);
                 break;
             case SHOOT:
                 intakeSpeed = UpperConstants.INTAKE_SHOOT_SPEED;
                 shooterSpeed = UpperConstants.SHOOTER_SHOOT_SPEED;
-                blink(new Color("#00FF00"));
+                blink(0,255,0);
                 break;
             case TELE:
-                setLED(new Color("#4CE1C8"));
+                setLED(76, 225, 200);
                 break;
             case ENDGAME:
                 elbowAngle = UpperConstants.ELBOW_GROUND_POS;
                 intakeSpeed = 0;
                 shooterSpeed = 0;
-                setLED(new Color("#9A00F3"));
+                setLED(154, 0, 243);
+                break;
         }
 
-        if(!UpperConstants.teleMode) {
-            setElbow(-elbowPID.calculate(elbowAngle - getElbowRotation()));
-            setShooter(shooterSpeed);
-            setIntake(intakeSpeed);
-        }
+        setElbow(-elbowPID.calculate(elbowAngle - getElbowRotation()));
+        setShooter(shooterSpeed);
+        setIntake(intakeSpeed);
 
         SmartDashboard.putString("robotState", state.toString());
         SmartDashboard.putNumber("elbowDEG", getElbowRotation());

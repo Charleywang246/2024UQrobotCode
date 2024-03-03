@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -117,6 +120,14 @@ public final class Constants {
 
     /* Field Oriented */
     // public static boolean fieldOriented = false;
+
+    public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
+      new PIDConstants(5.0, 0, 0), // Translation constants 
+      new PIDConstants(5.0, 0, 0), // Rotation constants 
+      maxSpeed, 
+      trackWidth, // Drive base radius (distance from center to furthest module) 
+      new ReplanningConfig()
+    );
     
     /* Module Specific Constants */
     /* Front Left Module - Module 0 */
@@ -162,9 +173,6 @@ public final class Constants {
     public static final Transform3d RCtoCAM = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
     public static final Translation3d zeroTranslation3d = new Translation3d(0, 0, 0);
     public static final Transform3d zeroTransform3d = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
-
-    public static final Transform3d Id47ToSpeakerC = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
-    public static final Transform3d Id38ToSpeakerC = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
   }
 
   public static final class UpperConstants {
@@ -205,16 +213,14 @@ public final class Constants {
     public static boolean teleMode = false;
 
     public static final Map<Double,Double> data = new HashMap<>(){{
-      put(0.0, 0.0);
-      put(0.5, 0.0);
     }};
 
     // y = -4x + 58.8
   }
 
   public static final class LedContants {
-    public static final int ledLenfth = 32;
-    public static final int ledPwmPort = 9;
+    public static final int ledLenfth = 16;
+    public static final int ledPwmPort = 7;
   }
 
 }

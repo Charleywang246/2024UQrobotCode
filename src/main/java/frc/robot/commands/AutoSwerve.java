@@ -1,47 +1,48 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Swerve;
 
-public class DriveForward extends Command{
-
+public class AutoSwerve extends Command{
+    
     private final Swerve swerve;
 
-    private final Timer timer = new Timer();
-    double targetTime = 0;
-    double x,y;
+    private double xSpeed, ySpeed, time;
 
-    public DriveForward(Swerve swerve, double targetTime,double x,double y) {
+    private final Timer timer = new Timer();
+
+    public AutoSwerve(Swerve swerve, double xSpeed, double ySpeed, double time) {
         this.swerve = swerve;
-        this.targetTime = targetTime;
-        this.x = x;
-        this.y = y;
+        this.xSpeed = xSpeed;
+        this.ySpeed = ySpeed;
+        this.time = time;
         addRequirements(swerve);
     }
 
     @Override
     public void initialize() {
+        DriverStation.reportError("AutoSwerve Command Start:\nxSpeed: "+xSpeed+" ySpeed"+ySpeed+" Time:"+time, false);
         timer.restart();
-        System.out.println("Move" + targetTime + "start");
     }
 
     @Override
     public void execute() {
-        swerve.drive(new Translation2d(x, y), 0, false, false);
+        swerve.drive(new Translation2d(xSpeed, ySpeed), 0, true, false);
     }
 
     @Override
     public void end(boolean interrupted) {
-        timer.stop();
         swerve.drive(new Translation2d(0, 0), 0, false, false);
-        System.out.println("Move" + targetTime + "end");
+        timer.stop();
+        DriverStation.reportError("AutoSwerve Command End:\nxSpeed: "+xSpeed+" ySpeed"+ySpeed+" Time:"+time, false);
     }
 
     @Override
     public boolean isFinished() {
-        if(timer.get() > targetTime) return true;
+        if(timer.get() > time) return true;
         else return false;
     }
 }
