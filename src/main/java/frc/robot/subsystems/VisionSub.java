@@ -33,10 +33,22 @@ public class VisionSub extends SubsystemBase{
         return table.getEntry("botpose").getDoubleArray(new double[6]);
     }
 
+    public double getRobotX() {
+        return table.getEntry("botpose").getDoubleArray(new double[6])[0];
+    }
+
+    public double getRobotY() {
+        return table.getEntry("botpose").getDoubleArray(new double[6])[1];
+    }
+
+    public double getRobotDEG() {
+        return table.getEntry("botpose").getDoubleArray(new double[6])[5];
+    }
+
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("RobotPose_X", getRobotPose()[0]);
-        SmartDashboard.putNumber("RobotPose_Y", getRobotPose()[1]);
-        SmartDashboard.putNumber("RobotPose_r", getRobotPose()[5]);
+        SmartDashboard.putNumber("RobotPose_X", getRobotX());
+        SmartDashboard.putNumber("RobotPose_Y", getRobotY());
+        SmartDashboard.putNumber("RobotPose_r", getRobotDEG());
     }
 }

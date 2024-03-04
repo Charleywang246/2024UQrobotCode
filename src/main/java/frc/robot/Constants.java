@@ -173,9 +173,15 @@ public final class Constants {
     public static final Translation3d zeroTranslation3d = new Translation3d(0, 0, 0);
     public static final Transform3d zeroTransform3d = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
 
-    public static final Map<Double, Double> data = new HashMap<>(){{
-      put(null, null);
-    }};
+    public static final double[][] data = {
+      {0.6775,-0.204589},
+      {1.6775, -0.002197 - 55/360},
+      {2.1775, -0.002197 - 53/360},
+      {2.6775, -0.002197 - 50/360},
+      {3.1775, -0.002197 - 49/360},
+      {3.6775, -0.002197 - 47/360},
+      {4.1775, -0.002197 - 45.5/360}
+    };
 
     public static final Translation2d Speaker_red = new Translation2d(8.036, 1.442);
     public static final Translation2d Speaker_blue = new Translation2d(-8.036, 1.442);

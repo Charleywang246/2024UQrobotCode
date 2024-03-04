@@ -28,6 +28,7 @@ import frc.robot.Constants.LedContants;
 import frc.robot.Constants.UpperConstants;
 import frc.robot.Constants.robotConstants;
 import frc.robot.Constants.UpperState;
+import frc.robot.Constants.VisionConstants;
 
 public class UpperSub extends SubsystemBase{
         
@@ -106,6 +107,20 @@ public class UpperSub extends SubsystemBase{
     public void setElbowAngle(double angle) {
         elbowAngle = angle;
     }
+
+    public double calculateElbow(double distance) {
+        double down0 = 0,down1 = 0,up0 = 0.2,up1 = 0;
+        for(int i=0;i<VisionConstants.data.length-1;i++) {
+            if(VisionConstants.data[i][0] > distance) {
+                up0 = VisionConstants.data[i][0];
+                up1 = VisionConstants.data[i][1];
+                down0 = VisionConstants.data[i-1][0];
+                down1 = VisionConstants.data[i-1][1];
+                break;
+            }
+        }
+        return ((distance - down0)*down1 + (up0-distance)*up1) / (up0 - down0);
+    };
 
     // intake
     public double getIntakeVel() {

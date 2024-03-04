@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.UpperState;
 import frc.robot.Constants.robotConstants;
+import frc.robot.commands.AutoAim;
 import frc.robot.commands.AutoUpper;
 import frc.robot.commands.Autos_X2;
 import frc.robot.commands.TeleopSwerve;
@@ -44,6 +45,7 @@ public class RobotContainer {
   private final TeleopSwerve tele = new TeleopSwerve(m_Swerve, driverController);
   private final TeleopUpper teleopUpper = new TeleopUpper(m_upper, driverController);
   private final Autos_X2 auto_x2 = new Autos_X2();
+  private final AutoAim autoaim = new AutoAim(m_Swerve, m_upper, m_vision);
 
   // private final SendableChooser<Command> autoChooser;
 
@@ -109,6 +111,8 @@ public class RobotContainer {
 
     //   AutoBuilder.followPath(path).schedule();
     // }));
+
+    SmartDashboard.putData("Auto Aim", autoaim);
   }
 
   public Command getAutonomousCommand() {
